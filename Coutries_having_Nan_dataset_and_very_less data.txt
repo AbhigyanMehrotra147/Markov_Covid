@@ -1,0 +1,121 @@
+#####Does not contain values of icu patients
+Bosnia and Herzegovina
+
+Croatia
+
+Faeroe Islands
+    
+Gibraltar
+    
+Greece
+
+Guernsey
+
+Hungary
+
+Iceland has only 69 values out of 856 rows
+
+Isle of Man
+
+Jersey
+
+Kosovo
+
+Latvia has only 77 values
+
+Liechtenstein
+
+Lithuania
+
+Malta has 121 values
+
+Moldova
+
+Monaco
+
+Montenegro
+
+North Macedonia
+
+Norway
+
+Poland
+
+Russia
+
+San Marino
+
+Ukraine
+
+Vatican
+
+##Does not contain values of new_Cases
+Guernsey
+
+Jersey
+
+##Does not have values of new_deaths
+Faeroe Islands has only 543 values out of 851 entries
+
+Gibraltar has 599 values out of 851 entries
+
+Guernsey
+
+Jersey
+
+Vatican
+
+##########Does not have values of hosp_patients
+
+Albania 0 values out of 859 entries
+
+Andorra
+
+Belarus
+
+Bosnia and Herzegovina
+
+Faeroe Islands
+
+Germany
+
+Gibraltar
+
+Greece
+
+Guernsey
+
+Isle of Man
+
+Jersey
+
+Kosovo
+
+Liechtenstein
+
+Lithuania 
+has 422 values out of 836 entries
+
+Malta
+has 690 values out of 850 entries
+
+Moldova
+
+Monaco
+
+Montenegro
+
+North Macedonia
+
+Romania
+has 483 values out of 858 entries
+
+Russia
+
+San Marino
+
+Ukraine
+
+Vatican
+
+
