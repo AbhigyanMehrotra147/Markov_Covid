@@ -76,6 +76,6 @@ class Super_Normalization():
         return dictionary
         
 Sp = Super_Normalization()
-#you are access the dataframe for each the four parameter by just using passing parameter as the key value
+#you can access the dataframe for each the four parameter by just using passing parameter as the key value
 #in the dictionary
 dict = Sp.get_final_df_Dictionary()
