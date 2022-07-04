@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-class Local_Static(SN):
+class Global_Static(SN):
     def __init__(self, catagory):
         SN.__init__(self)
         self.catagory = catagory
@@ -14,24 +14,22 @@ class Local_Static(SN):
     # uses the applymap method which acts on each data point in the data set
 
     def Divide_by_global_max(self):
-        for column in self.Dataframe_with_countries_as_column:
-            local_max = self.Dataframe_with_countries_as_column[column].max()
-            self.Dataframe_with_countries_as_column[column] = self.Dataframe_with_countries_as_column[column].apply(
-                lambda x: x/local_max)
-        # print(self.Dataframe_with_countries_as_column)
+        global_max = self.Dataframe_with_countries_as_column.max().max()
+        self.Dataframe_with_countries_as_column = self.Dataframe_with_countries_as_column.applymap(
+            lambda x: x/global_max)
+
     # Function to be made much better in futrue
     # Function plots the new cases from each country normalized to the global maximum
 
     def plot_data_frame(self):
         plt.plot(self.Dataframe_with_countries_as_column)
-        plt.title("Normalizing each country with Local Maximum")
+        plt.title("Normalizing each country with Global Maximum")
         plt.xlabel("Dates")
         plt.ylabel("Normalized to 1")
         plt.show()
 
 
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
-Ls = Local_Static(Catagory[0])
-# Ls.Make_dataframe_with_countries_as_column()
-Ls.Divide_by_global_max()
-Ls.plot_data_frame()
+Gs = Global_Static(Catagory[0])
+Gs.Divide_by_global_max()
+Gs.plot_data_frame()

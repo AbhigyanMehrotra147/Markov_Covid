@@ -6,19 +6,10 @@ import matplotlib.pyplot as plt
 class Global_Dynamic(SN):
     def __init__(self, catagory):
         SN.__init__(self)
-        SN.Filter_Column(self)
-        SN.Grouping_by_country(self)
         self.catagory = catagory
-        self.Dataframe_with_countries_as_column = pd.DataFrame()
+        self.Dataframe_with_countries_as_column = SN.get_final_df_Dictionary(self)[
+            self.catagory]
         self.max_array = [0]*self.data_frame.shape[0]
-
-    def Make_dataframe_with_countries_as_column(self):
-        for country in self.group_by_country:
-            country_name = str(country[0])
-            # Skipping all those countries which only have Nan values
-            if country[1][self.catagory].count() == 0:
-                continue
-            self.Dataframe_with_countries_as_column[country_name] = country[1][self.catagory]
 
     # Creates the maximum array
     # The maximum array holds :
@@ -62,7 +53,6 @@ class Global_Dynamic(SN):
 
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
 Gd = Global_Dynamic(Catagory[0])
-Gd.Make_dataframe_with_countries_as_column()
 Gd.Create_max_array(60)
 Gd.Divide_by_max_array()
 Gd.plot_data_frame()
