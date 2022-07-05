@@ -15,7 +15,7 @@ class Local_Dynamic(SN):
 
     # Creates the maximum array
     # The maximum array holds local maximum for all the frames that a particular 
-    # data point was unders corresponding to a particular date (row) and countrie (column) 
+    # data point was unders corresponding to a particular date (row) and country (column) 
     def Create_max_array(self, frame_size): 
         
         # matrix of row_size * column_size (row * column)

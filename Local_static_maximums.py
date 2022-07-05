@@ -1,3 +1,4 @@
+
 from Super_class_for_normalization import Super_Normalization as SN
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -33,4 +34,3 @@ Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
 Ls = Local_Static(Catagory[0])
 Ls.Divide_by_local_max()
 Ls.plot_data_frame()
-

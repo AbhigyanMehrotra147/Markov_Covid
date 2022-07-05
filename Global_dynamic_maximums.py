@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 
 class Global_Dynamic(SN):
+    # Initiailizig super class and this class
+    # also assigning a catagory to each instant. Such as 'new_cases'
     def __init__(self, catagory):
         SN.__init__(self)
         self.catagory = catagory
@@ -29,7 +31,6 @@ class Global_Dynamic(SN):
             for j in range(i, i + frame_size+1):
                 if self.max_array[j] < global_frame_max:
                     self.max_array[j] = global_frame_max
-        # print(self.max_array)
 
     # Functoin divides each data point by the global maximum
     # uses the applymap method which acts on each data point in the data set
@@ -39,12 +40,12 @@ class Global_Dynamic(SN):
         for i in range(0, row_size):
             self.Dataframe_with_countries_as_column.iloc[
                 i] = self.Dataframe_with_countries_as_column.iloc[i]/self.max_array[i]
-        # print(self.Dataframe_with_countries_as_column)
-        # Function to be made much better in futrue
-        # Function plots the new cases from each country normalized to the global maximum
 
-    def plot_data_frame(self):
-        plt.plot(self.Dataframe_with_countries_as_column)
+    # Function to be made much better in future
+    # Function plots the new cases from specified country normalized to the global maximum
+
+    def plot_data_frame(self, country):
+        plt.plot(self.Dataframe_with_countries_as_column[country])
         plt.title("Normalizing each country with Dynaamic Global Maximums")
         plt.xlabel("Dates")
         plt.ylabel("Normalized to 1")
@@ -52,7 +53,8 @@ class Global_Dynamic(SN):
 
 
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
+country = ["France", "Germany", "Italy"]
 Gd = Global_Dynamic(Catagory[0])
 Gd.Create_max_array(60)
 Gd.Divide_by_max_array()
-Gd.plot_data_frame()
+Gd.plot_data_frame(country)
