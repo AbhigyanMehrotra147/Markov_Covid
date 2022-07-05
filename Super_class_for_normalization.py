@@ -71,7 +71,7 @@ class Super_Normalization():
             Nan_ans = self.list_of_Nan_countries(parameter)
             df_ans = self.get_country_df_for_particular_parameter(parameter)
             deleted_nan_country_df = self.delete_Nan_countries_from_df(Nan_ans, df_ans)
-            dictionary[parameter] = deleted_nan_country_df
+            dictionary[parameter] = deleted_nan_country_df.interpolate(limit_area = "inside")
             
         return dictionary
         
