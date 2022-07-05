@@ -1,4 +1,3 @@
-
 import pandas as pd
 
 
@@ -60,7 +59,7 @@ class Super_Normalization():
     #returns the final clean dataset for each parameter in the form of dictionary
     #where the parameter are the keys and data frames are the values
     
-    #now only interpolation is missing
+ 
     def get_final_df_Dictionary(self):
         self.Filter_Column()
         self.data_frame.reset_index(inplace =True)
@@ -71,6 +70,7 @@ class Super_Normalization():
             Nan_ans = self.list_of_Nan_countries(parameter)
             df_ans = self.get_country_df_for_particular_parameter(parameter)
             deleted_nan_country_df = self.delete_Nan_countries_from_df(Nan_ans, df_ans)
+            #final missing values "inside" the dataframe are filled using linear interpolation method
             dictionary[parameter] = deleted_nan_country_df.interpolate(limit_area = "inside")
             
         return dictionary
