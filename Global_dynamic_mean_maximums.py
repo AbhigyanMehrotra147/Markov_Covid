@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 
 class Global_Dynamic_Mean(SN):
+    # Initiailizig super class and this class
+    # also assigning a catagory to each instant. Such as 'new_cases'
     def __init__(self, catagory):
         SN.__init__(self)
         self.catagory = catagory
@@ -20,16 +22,16 @@ class Global_Dynamic_Mean(SN):
             lambda x: 0)
         for i in range(1, row_size):
             if i > row_size-frame_size:
-                global_dynamic_max = temp_data_frame[i:row_size].max(
+                global_dynamic_max = temp_data_frame.iloc[i:row_size].max(
                 ).max()
                 self.Dataframe_with_countries_as_column.iloc[i:row_size] += temp_data_frame[i:row_size].applymap(
                     lambda x: x/global_dynamic_max)
                 continue
-            global_dynamic_max = temp_data_frame[i:i
-                                                 + frame_size+1].max(
+            global_dynamic_max = temp_data_frame.iloc[i:i
+                                                      + frame_size+1].max(
             ).max()
             self.Dataframe_with_countries_as_column.iloc[i:i+frame_size +
-                                                         1] = temp_data_frame[i:i+frame_size+1].applymap(lambda x: x/global_dynamic_max)
+                                                         1] = temp_data_frame.iloc[i:i+frame_size+1].applymap(lambda x: x/global_dynamic_max)
         print(self.Dataframe_with_countries_as_column)
 
     # Function takes the mean of eachdata point acoording to the number of times vaules have been added to it
@@ -52,8 +54,8 @@ class Global_Dynamic_Mean(SN):
     # Function to be made much better in futrue
     # Function plots the new cases from each country normalized to the global maximum
 
-    def plot_data_frame(self):
-        plt.plot(self.Dataframe_with_countries_as_column)
+    def plot_data_frame(self, country):
+        plt.plot(self.Dataframe_with_countries_as_column[country])
         plt.title("Normalizing each country with Dynaamic Global Maximums")
         plt.xlabel("Dates")
         plt.ylabel("Normalized to 1")
@@ -62,7 +64,8 @@ class Global_Dynamic_Mean(SN):
 
 frame_size = 80
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
+country = ["France", "Germany", "Italy"]
 Gdm = Global_Dynamic_Mean(Catagory[0])
 Gdm.Divide_by_max_and_add(frame_size)
 Gdm.Divide_by_frame_size(frame_size)
-Gdm.plot_data_frame()
+Gdm.plot_data_frame(country)

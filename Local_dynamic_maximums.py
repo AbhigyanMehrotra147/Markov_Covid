@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 
 
 class Local_Dynamic(SN):
+    # Initializing super class and this
+    # Also assiging a catagory such as 'new_cases'
     def __init__(self, catagory):
         SN.__init__(self)
         self.catagory = catagory
@@ -12,8 +14,9 @@ class Local_Dynamic(SN):
             self.catagory]
         self.max_matrix = None
 
-    # Creates the maximum array
-    # The maximum array holds :
+    # Creates the maximum matrix
+    # The maximum matrix which holds the maximum at each date.
+    # The maximum is decided after comparing it to all the frames the a date is part of.
 
     def Create_max_array(self, frame_size):
         row_size = self.Dataframe_with_countries_as_column.shape[0]
@@ -36,7 +39,7 @@ class Local_Dynamic(SN):
                         self.max_matrix[k][j] = local_frame_max
         print(self.max_matrix)
 
-    # Functoin divides each data point by the global maximum
+    # Functoin divides each data point by the local maximum
     # uses the applymap method which acts on each data point in the data set
 
     def Divide_by_max_array(self):
@@ -50,8 +53,8 @@ class Local_Dynamic(SN):
 
     # Function to be made much better in futrue
     # Function plots the new cases from each country normalized to the global maximum
-    def plot_data_frame(self):
-        plt.plot(self.Dataframe_with_countries_as_column)
+    def plot_data_frame(self, country):
+        plt.plot(self.Dataframe_with_countries_as_column[country])
         plt.title("Normalizing each country with Dynaamic Local Maximums")
         plt.xlabel("Dates")
         plt.ylabel("Normalized to 1")
@@ -59,8 +62,8 @@ class Local_Dynamic(SN):
 
 
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
+country = ["France", "Germany", "Italy"]
 Ld = Local_Dynamic(Catagory[0])
-# Ld.Make_dataframe_with_countries_as_column()
 Ld.Create_max_array(60)
 Ld.Divide_by_max_array()
-Ld.plot_data_frame()
+Ld.plot_data_frame(country)

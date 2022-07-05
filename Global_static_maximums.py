@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 
 class Global_Static(SN):
+    # Initiailizig super class and this class
+    # also assigning a catagory to each instant. Such as 'new_cases'
     def __init__(self, catagory):
         SN.__init__(self)
         self.catagory = catagory
@@ -19,17 +21,18 @@ class Global_Static(SN):
             lambda x: x/global_max)
 
     # Function to be made much better in futrue
-    # Function plots the new cases from each country normalized to the global maximum
+    # Function plots the new cases from specified country normalized to the global maximum
 
-    def plot_data_frame(self):
-        plt.plot(self.Dataframe_with_countries_as_column)
-        plt.title("Normalizing each country with Global Maximum")
+    def plot_data_frame(self, country):
+        plt.plot(self.Dataframe_with_countries_as_column[country])
+        plt.title("Normalizing each country with Global Maximum " + self.catagory)
         plt.xlabel("Dates")
         plt.ylabel("Normalized to 1")
         plt.show()
 
 
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
-Gs = Global_Static(Catagory[0])
+country = ["France", "Germany",     "Italy"]
+Gs = Global_Static(Catagory[3])
 Gs.Divide_by_global_max()
-Gs.plot_data_frame()
+Gs.plot_data_frame(country)
