@@ -12,7 +12,7 @@ class Global_Dynamic_Mean(SN):
         self.Dataframe_with_countries_as_column = SN.get_final_df_Dictionary(self)[
             self.catagory]
 
-    # Functoin divides and adds each data points of frame by the global maximum
+    # Function divides and adds each data points of frame by the global maximum
     # uses the applymap method which acts on each data point in the data set
 
     def Divide_by_max_and_add(self, frame_size):
