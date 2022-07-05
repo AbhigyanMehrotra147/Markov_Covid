@@ -65,7 +65,7 @@ class Super_Normalization():
         self.data_frame.reset_index(inplace =True)
         self.Grouping_by_country()
         dictionary = {}
-        col_array = df.getparameter_array()
+        col_array = self.getparameter_array()
         for parameter in col_array:
             Nan_ans = self.list_of_Nan_countries(parameter)
             df_ans = self.get_country_df_for_particular_parameter(parameter)
@@ -74,6 +74,13 @@ class Super_Normalization():
             dictionary[parameter] = deleted_nan_country_df.interpolate(limit_area = "inside")
             
         return dictionary
+    
+#     def plot_data_frame(self):
+#         plt.plot(self.Dataframe_with_countries_as_column)
+#         plt.title("Normalizing each country with Local Maximum")
+#         plt.xlabel("Dates")
+#         plt.ylabel("Normalized to 1")
+#         plt.show()
         
 # Sp = Super_Normalization()
 # #you are access the dataframe for each the four parameter by just using passing parameter as the key value

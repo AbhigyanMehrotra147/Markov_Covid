@@ -10,13 +10,12 @@ class Global_Static(SN):
         self.Dataframe_with_countries_as_column = SN.get_final_df_Dictionary(self)[
             self.catagory]
 
-    # Functoin divides each data point by the global maximum
+    # Function divides each data point by the global maximum
     # uses the applymap method which acts on each data point in the data set
 
     def Divide_by_global_max(self):
         global_max = self.Dataframe_with_countries_as_column.max().max()
-        self.Dataframe_with_countries_as_column = self.Dataframe_with_countries_as_column.applymap(
-            lambda x: x/global_max)
+        self.Dataframe_with_countries_as_column = self.Dataframe_with_countries_as_column.applymap(lambda x: x/global_max)
 
     # Function to be made much better in futrue
     # Function plots the new cases from each country normalized to the global maximum
