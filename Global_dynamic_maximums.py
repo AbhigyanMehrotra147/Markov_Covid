@@ -44,12 +44,9 @@ class Global_Dynamic(SN):
     # Function to be made much better in future
     # Function plots the new cases from specified country normalized to the global maximum
 
-    def plot_data_frame(self, country):
-        plt.plot(self.Dataframe_with_countries_as_column[country])
-        plt.title("Normalizing each country with Dynaamic Global Maximums")
-        plt.xlabel("Dates")
-        plt.ylabel("Normalized to 1")
-        plt.show()
+    def plot_data_frame(self, countries=None):
+        super().plot_data_frame(
+            self.Dataframe_with_countries_as_column, "Global Dynamic", self.catagory, countries)
 
 
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
@@ -57,4 +54,4 @@ country = ["France", "Germany", "Italy"]
 Gd = Global_Dynamic(Catagory[0])
 Gd.Create_max_array(60)
 Gd.Divide_by_max_array()
-Gd.plot_data_frame(country)
+Gd.plot_data_frame()

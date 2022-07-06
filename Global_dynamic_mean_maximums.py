@@ -12,7 +12,7 @@ class Global_Dynamic_Mean(SN):
         self.Dataframe_with_countries_as_column = SN.get_final_df_Dictionary(self)[
             self.catagory]
 
-    # Function divides and adds each data points of frame by the global maximum
+    # Functoin divides and adds each data points of frame by the global maximum
     # uses the applymap method which acts on each data point in the data set
 
     def Divide_by_max_and_add(self, frame_size):
@@ -32,7 +32,6 @@ class Global_Dynamic_Mean(SN):
             ).max()
             self.Dataframe_with_countries_as_column.iloc[i:i+frame_size +
                                                          1] = temp_data_frame.iloc[i:i+frame_size+1].applymap(lambda x: x/global_dynamic_max)
-        print(self.Dataframe_with_countries_as_column)
 
     # Function takes the mean of eachdata point acoording to the number of times vaules have been added to it
     def Divide_by_frame_size(self, frame_size):
@@ -48,24 +47,20 @@ class Global_Dynamic_Mean(SN):
                 i] = self.Dataframe_with_countries_as_column.iloc[i]/frame_size
         self.Dataframe_with_countries_as_column.drop(
             self.Dataframe_with_countries_as_column.index[row_size-(frame_size+1):row_size], inplace=True)
-        print(self.Dataframe_with_countries_as_column)
 
     # print(self.Dataframe_with_countries_as_column)
     # Function to be made much better in futrue
     # Function plots the new cases from each country normalized to the global maximum
 
-    def plot_data_frame(self, country):
-        plt.plot(self.Dataframe_with_countries_as_column[country])
-        plt.title("Normalizing each country with Dynaamic Global Maximums")
-        plt.xlabel("Dates")
-        plt.ylabel("Normalized to 1")
-        plt.show()
+    def plot_data_frame(self, countries=None):
+        super().plot_data_frame(
+            self.Dataframe_with_countries_as_column, "Global Dynamic Mean", self.catagory, countries)
 
 
 frame_size = 80
 Catagory = ["new_cases", "new_deaths", "hosp_patients", "icu_patients"]
-country = ["France", "Germany", "Italy"]
+country = ["France", "Italy"]
 Gdm = Global_Dynamic_Mean(Catagory[0])
 Gdm.Divide_by_max_and_add(frame_size)
 Gdm.Divide_by_frame_size(frame_size)
-Gdm.plot_data_frame(country)
+Gdm.plot_data_frame()
