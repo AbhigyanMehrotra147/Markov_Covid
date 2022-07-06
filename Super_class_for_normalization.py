@@ -75,12 +75,23 @@ class Super_Normalization():
             
         return dictionary
     
-#     def plot_data_frame(self):
-#         plt.plot(self.Dataframe_with_countries_as_column)
-#         plt.title("Normalizing each country with Local Maximum")
-#         plt.xlabel("Dates")
-#         plt.ylabel("Normalized to 1")
-#         plt.show()
+    def plot_data_frame(self):
+        dframe = Ldm.Dataframe_with_countries_as_column.reset_index()
+        dframe['date'] = pd.to_datetime(df['date'])
+
+        # dframe['date']=dframe['date'].astype(str)
+        dframe.plot('date')
+
+        plt.title("Local_dynamic_mean_maximum" + "\n"+ Catagory[i].upper())
+        plt.xlabel("Dates")
+        #plt.figure(figsize = (10,5), dpi = 400)
+        plt.ylabel("Normalized to 1")
+
+
+plt.legend(bbox_to_anchor = (1.0,1.0))
+#plt.figure(dpi = 400)
+
+plt.savefig('Local_dynamic_mean_maximum' + Catagory[i].upper() +'.png', dpi = 300)
         
 # Sp = Super_Normalization()
 # #you are access the dataframe for each the four parameter by just using passing parameter as the key value
