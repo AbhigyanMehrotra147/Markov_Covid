@@ -54,7 +54,6 @@ class Super_Normalization():
         return country_df_particular_parameter
 
     # storing the name of the parameters from the data frame of a list
-
     def getparameter_array(self):
         col_array = []
         for col_name in self.data_frame.columns:
@@ -64,8 +63,7 @@ class Super_Normalization():
 
     # returns the final clean dataset for each parameter in the form of dictionary
     # where the parameter are the keys and data frames are the values
-
-    def get_final_df_Dictionary(self):
+    def get_final_df_Dictionary(self, rolling_days = 14):
         self.Filter_Column()
         self.data_frame.reset_index(inplace=True)
         self.Grouping_by_country()
@@ -77,8 +75,11 @@ class Super_Normalization():
             deleted_nan_country_df = self.delete_Nan_countries_from_df(
                 Nan_ans, df_ans)
             # final missing values "inside" the dataframe are filled using linear interpolation method
-            dictionary[parameter] = deleted_nan_country_df.interpolate(
+            interpolated_df = deleted_nan_country_df.interpolate(
                 limit_area="inside")
+            #finding the rolling _average for better visualisation
+            rolling_avg_df = rolling_average(interpolated_df, rolling_days)
+            dictionary[parameter] = rolling_avg_df
 
         return dictionary
 
@@ -105,6 +106,51 @@ class Super_Normalization():
         plt.ylabel("Normalized to 1")
         plt.legend(bbox_to_anchor=(1, 1), loc='upper left')
         plt.show()
+        
+    
+    # new_df = dataframe with date as index and countries as column
+    # rolling_days = number of days you want to take average of (strongly recommended that the value should be a multiple of 7)
+    def rolling_average(self, new_df, rolling_days):
+        
+        row_count = new_df.shape[0]
+        column_count = new_df.shape[1]
+        
+        temp_data_frame = new_df.copy()
+        
+        for country_index in range(column_count):
+
+            index_counter = 0
+
+            #for each date in each country
+            for date_index in range(row_count):
+
+                #surpass all the Nan values in the dataframe then only proceeding
+                if not (np.isnan(new_df.iloc[date_index, country_index])):
+
+                    #summing of the rolling days from the copied data frame
+                    #assuming that the dataframe is larger than the rolling_days parameter
+                    rolling_counter_index = date_index
+                    sum_for_mean = 0
+                    for index in range(rolling_days):
+                        sum_for_mean += temp_data_frame.iloc[rolling_counter_index, country_index]
+                        rolling_counter_index += 1
+
+                    #divide the sum by rolling days
+                    rolling_days_mean = sum_for_mean / rolling_days
+
+                    #updating the new value in the original dataframe
+                    new_df.iloc[rolling_counter_index - 1, country_index] = rolling_days_mean
+
+                    #reached the end of the dataframe
+                    if(rolling_counter_index - 1 == row_count-1):
+                        break
+
+                    #this function will work for the first number of rolling days 
+                    if index_counter < rolling_days:
+                        #removing (here filling with Nan value) the first rolling days values from the dataframe
+                        new_df.iloc[date_index, country_index] = np.nan
+                        index_counter += 1
+
 # Sp = Super_Normalization()
 # #you are access the dataframe for each the four parameter by just using passing parameter as the key value
 # #in the dictionary
