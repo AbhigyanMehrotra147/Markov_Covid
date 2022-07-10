@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 class Global_Dynamic_Mean(SN):
-    # Initiailizig super class and this class
+    # Initiailizing super class and this class
     # also assigning a catagory to each instant. Such as 'new_cases'
     def __init__(self, catagory):
         SN.__init__(self)
@@ -48,10 +48,8 @@ class Global_Dynamic_Mean(SN):
         self.Dataframe_with_countries_as_column.drop(
             self.Dataframe_with_countries_as_column.index[row_size-(frame_size+1):row_size], inplace=True)
 
-    # print(self.Dataframe_with_countries_as_column)
-    # Function to be made much better in futrue
+        
     # Function plots the new cases from each country normalized to the global maximum
-
     def plot_data_frame(self, countries=None):
         super().plot_data_frame(
             self.Dataframe_with_countries_as_column, "Global Dynamic Mean", self.catagory, countries)

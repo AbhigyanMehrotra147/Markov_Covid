@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 class Global_Dynamic(SN):
-    # Initiailizig super class and this class
+    # Initiailizing super class and this class
     # also assigning a catagory to each instant. Such as 'new_cases'
     def __init__(self, catagory):
         SN.__init__(self)
@@ -41,9 +41,8 @@ class Global_Dynamic(SN):
             self.Dataframe_with_countries_as_column.iloc[
                 i] = self.Dataframe_with_countries_as_column.iloc[i]/self.max_array[i]
 
-    # Function to be made much better in future
+   
     # Function plots the new cases from specified country normalized to the global maximum
-
     def plot_data_frame(self, countries=None):
         super().plot_data_frame(
             self.Dataframe_with_countries_as_column, "Global Dynamic", self.catagory, countries)
