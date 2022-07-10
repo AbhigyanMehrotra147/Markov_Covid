@@ -150,6 +150,7 @@ class Super_Normalization():
                         #removing (here filling with Nan value) the first rolling days values from the dataframe
                         new_df.iloc[date_index, country_index] = np.nan
                         index_counter += 1
+        return new_df
 
 # Sp = Super_Normalization()
 # #you are access the dataframe for each the four parameter by just using passing parameter as the key value
