@@ -114,7 +114,7 @@ class Super_Normalization():
     
     # new_df = dataframe with date as index and countries as column
     # rolling_days = number of days you want to take average of (strongly recommended that the value should be a multiple of 7)
-    def rolling_average(self, new_df, rolling_days):
+     def rolling_average(self, new_df, rolling_days):
         
         row_count = new_df.shape[0]
         column_count = new_df.shape[1]
@@ -141,14 +141,15 @@ class Super_Normalization():
                                                              ending_rolling_counter_index, country_index].mean()       
                     
                     # updating the new value in the original dataframe
-                    new_df.iloc[rolling_counter_index,country_index] = rolling_days_mean
+                    new_df.iloc[ending_rolling_counter_index,country_index] = rolling_days_mean
 
                     # reached the end of the dataframe
-                    if(rolling_counter_index == row_count-1):
+                    if(ending_rolling_counter_index == row_count-1):
                         break
 
-                    # this function will work for the first number of rolling days
-                    if index_counter < rolling_days:
+                    # this function will work for the first number of rolling days 
+                    # except the last day where we are actually filling the new average value
+                    if index_counter < rolling_days -1:
                         # removing (here filling with Nan value) the first rolling days values from the dataframe
                         new_df.iloc[date_index, country_index] = np.nan
                         index_counter += 1
