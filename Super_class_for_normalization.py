@@ -85,7 +85,7 @@ class Super_Normalization():
     # The Type argument is the type of Normalization
     # The catagory argument is a catagory such as 'new_cases'
     # The countries = None arguments plots all countries if there are no specified countries
-    def plot_data_frame(self, DataFrame, Type, catagory, countries=None, rolling_days == 14):
+    def plot_data_frame(self, DataFrame, Type, catagory, countries=None, rolling_days = 14):
         
         #finding the rolling _average for better visualisation
         DataFrame = rolling_average(interpolated_df, rolling_days)
