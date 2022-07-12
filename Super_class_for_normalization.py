@@ -104,7 +104,7 @@ class Super_Normalization():
                 plt.plot(
                     DataFrame['date'], DataFrame[column], color=Super_Normalization.COLOR[column], label=column)
                 #plt.xticks(DataFrame.date[::100])
-        plt.title("Rolling Average in Plot function" +
+        plt.title("Normalizing each country with " +
                   Type + " Maximum " + catagory)
         plt.xlabel("Dates")
         plt.ylabel("Normalized to 1")
