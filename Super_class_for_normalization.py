@@ -118,7 +118,7 @@ class Super_Normalization():
     
     # new_df = dataframe with date as index and countries as column
     # rolling_days = number of days you want to take average of (strongly recommended that the value should be a multiple of 7)
-     def rolling_average(self, new_df, rolling_days):
+    def rolling_average(self, new_df, rolling_days):
         
         row_count = new_df.shape[0]
         column_count = new_df.shape[1]
@@ -138,17 +138,18 @@ class Super_Normalization():
                     # summing of the rolling days from the copied data frame
                     # assuming that the dataframe is larger than the rolling_days parameter
                     rolling_counter_index = date_index
-                    ending_rolling_counter_index = date_index + rolling_days 
+                    ending_rolling_counter_index = date_index + rolling_days
 
                     # finding the mean of all the days within the rolling days window
                     rolling_days_mean = temp_data_frame.iloc[rolling_counter_index:
                                                              ending_rolling_counter_index, country_index].mean()       
                     
                     # updating the new value in the original dataframe
-                    new_df.iloc[ending_rolling_counter_index,country_index] = rolling_days_mean
+                    # doing -1 to put the value into the last element of rolling day window (if rolling_days = 7 then into the 7th element i.e (6th index not 7th index)
+                    new_df.iloc[ending_rolling_counter_index - 1, country_index] = rolling_days_mean
 
                     # reached the end of the dataframe
-                    if(ending_rolling_counter_index == row_count-1):
+                    if(ending_rolling_counter_index - 1 == row_count-1):
                         break
 
                     # this function will work for the first number of rolling days 
@@ -157,7 +158,8 @@ class Super_Normalization():
                         # removing (here filling with Nan value) the first rolling days values from the dataframe
                         new_df.iloc[date_index, country_index] = np.nan
                         index_counter += 1
-        return new_df
+        return new_df 
+
 
 # Sp = Super_Normalization()
 # #you are access the dataframe for each the four parameter by just using passing parameter as the key value
