@@ -88,27 +88,31 @@ class Super_Normalization():
     def plot_data_frame(self, DataFrame, Type, catagory, countries=None, rolling_days = 14):
         
         #finding the rolling _average for better visualisation
-        DataFrame = rolling_average(interpolated_df, rolling_days)
+        DataFrame = self.rolling_average(DataFrame, rolling_days)
         DataFrame.reset_index(inplace=True)
-        
-        #Converting date column to date and time series
         DataFrame['date'] = pd.to_datetime(DataFrame['date'])
 
         if countries != None:
             for column in countries:
                 plt.plot(
-                    DataFrame.date, DataFrame[column], color=Super_Normalization.COLOR[column], label=column)
+                    DataFrame.date, DataFrame[column], color=Super_Normalization.COLOR[column], label=column )
+                #plt.xticks(DataFrame.date[::100])
         if countries == None:
             for column in DataFrame:
                 if column == 'date':
                     continue
                 plt.plot(
                     DataFrame['date'], DataFrame[column], color=Super_Normalization.COLOR[column], label=column)
-        plt.title("Normalizing each country with " +
+                #plt.xticks(DataFrame.date[::100])
+        plt.title("Rolling Average in Plot function" +
                   Type + " Maximum " + catagory)
         plt.xlabel("Dates")
         plt.ylabel("Normalized to 1")
+        plt.xticks(DataFrame.date[::200])
+        plt.tick_params(axis='x', labelrotation=0)
         plt.legend(bbox_to_anchor=(1, 1), loc='upper left')
+        #plt.legend()
+        #plt.savefig(Type + "Static" + "Maximum" + Catagory[i] +'.png', dpi = 300)
         plt.show()
         
     
