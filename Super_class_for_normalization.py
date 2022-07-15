@@ -1,4 +1,5 @@
 
+import Segregating_countries_by_population_and_density as SCPD
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,6 +11,10 @@ class Super_Normalization():
     # Declaring standard colors for all countries. These colors will be fixed across all plots
     COLOR = {'France': '#44a2c7', 'Germany': '#f42fa2', 'Finland': '#3b2b99', 'Russia': '#f41f09', 'United Kingdom': '#a25ee1', 'Italy': '#91190a', 'Spain': '#0258bb', 'Sweden': '#2f65bf', 'Slovenia': '#d2ba0d', 'Denmark': '#a83e40', 'Estonia': '#8d3b08', 'Belgium': '#9dbeaa', 'Greece': '#5e4b98', 'Luxembourg': '#b51c57', 'Norway': '#1e5c3e', 'Switzerland': '#2106f2', 'Albania': '#53ace0', 'Austria': '#223406', 'Croatia': '#4f5026', 'Latvia': '#c923cc', 'Romania': '#ae7a50', 'North Macedonia': '#59a61f', 'Serbia': '#96510b', 'Netherlands': '#0525ba', 'Belarus': '#bc6309', 'Iceland': '#e2d4b3',
              'Monaco': '#c28cc5', 'Ireland': '#62b93e', 'San Marino': '#668d02', 'Czechia': '#bcaab2', 'Portugal': '#4851de', 'Andorra': '#c6d06f', 'Ukraine': '#5a7c84', 'Hungary': '#1d9d53', 'Liechtenstein': '#b3a9c0', 'Faeroe Islands': '#d2eef6', 'Poland': '#a55d32', 'Gibraltar': '#bfa438', 'Bosnia and Herzegovina': '#e3cad7', 'Malta': '#2346a6', 'Slovakia': '#732bc8', 'Vatican': '#e52e53', 'Moldova': '#998396', 'Cyprus': '#400089', 'Bulgaria': '#fbe7a8', 'Kosovo': '#f2c023', 'Montenegro': '#a2c1bd', 'Lithuania': '#18a424', 'Isle of Man': '#4a1793', 'Guernsey': '#171d71', 'Jersey': '#256586'}
+    # Countries Seperated by populations
+    population_in_ascending_order = SCPD.Population_in_order
+    # Countries seperated by density
+    density_in_ascending_order = SCPD.Density_in_order
 
     def __init__(self):
         self.data_frame = pd.read_csv(Super_Normalization.url)
@@ -75,9 +80,10 @@ class Super_Normalization():
             df_ans = self.get_country_df_for_particular_parameter(parameter)
             deleted_nan_country_df = self.delete_Nan_countries_from_df(
                 Nan_ans, df_ans)
-            
+
             # final missing values "inside" the dataframe are filled using linear interpolation method
-            interpolated_df = deleted_nan_country_df.interpolate(limit_area="inside")
+            interpolated_df = deleted_nan_country_df.interpolate(
+                limit_area="inside")
             dictionary[parameter] = interpolated_df
 
         return dictionary
@@ -85,25 +91,29 @@ class Super_Normalization():
     # The Type argument is the type of Normalization
     # The catagory argument is a catagory such as 'new_cases'
     # The countries = None arguments plots all countries if there are no specified countries
-    def plot_data_frame(self, DataFrame, Type, catagory, countries=None, rolling_days = 14):
-        
-        #finding the rolling _average for better visualisation
+    # The argument Population_group specifie which group segregated by population are we plotting
+    def plot_data_frame(self, DataFrame, Type, catagory, countries=[], population_group=None, rolling_days=14):
+
+        # finding the rolling _average for better visualisation
         DataFrame = self.rolling_average(DataFrame, rolling_days)
         DataFrame.reset_index(inplace=True)
         DataFrame['date'] = pd.to_datetime(DataFrame['date'])
-
-        if countries != None:
+        # Making the figure size larger
+        plt.figure(figsize=(15, 15))
+        if len(countries) != 0:
             for column in countries:
+                if column not in DataFrame.columns:
+                    continue
                 plt.plot(
-                    DataFrame.date, DataFrame[column], color=Super_Normalization.COLOR[column], label=column )
-                #plt.xticks(DataFrame.date[::100])
-        if countries == None:
+                    DataFrame.date, DataFrame[column], color=Super_Normalization.COLOR[column], label=column)
+                # plt.xticks(DataFrame.date[::100])
+        if len(countries) == 0:
             for column in DataFrame:
                 if column == 'date':
                     continue
                 plt.plot(
                     DataFrame['date'], DataFrame[column], color=Super_Normalization.COLOR[column], label=column)
-                #plt.xticks(DataFrame.date[::100])
+                # plt.xticks(DataFrame.date[::100])
         plt.title("Normalizing each country with " +
                   Type + " Maximum " + catagory)
         plt.xlabel("Dates")
@@ -111,15 +121,16 @@ class Super_Normalization():
         plt.xticks(DataFrame.date[::200])
         plt.tick_params(axis='x', labelrotation=0)
         plt.legend(bbox_to_anchor=(1, 1), loc='upper left')
-        #plt.legend()
-        #plt.savefig(Type + "Static" + "Maximum" + Catagory[i] +'.png', dpi = 300)
+        # plt.savefig(Type + "Static" + "Maximum" + Catagory[i] +'.png', dpi = 300)
+        # plt.savefig('C:/Users/Abhigyan/Desktop/Covid_Project_connected_to_github/Plots/Plots_with_moving_average/' +
+        # population_group + ' ' + Type + ' ' + catagory + ' Maximum.png')
         plt.show()
-        
-    
+
     # new_df = dataframe with date as index and countries as column
     # rolling_days = number of days you want to take average of (strongly recommended that the value should be a multiple of 7)
+
     def rolling_average(self, new_df, rolling_days):
-        
+
         row_count = new_df.shape[0]
         column_count = new_df.shape[1]
 
@@ -142,23 +153,24 @@ class Super_Normalization():
 
                     # finding the mean of all the days within the rolling days window
                     rolling_days_mean = temp_data_frame.iloc[rolling_counter_index:
-                                                             ending_rolling_counter_index, country_index].mean()       
-                    
+                                                             ending_rolling_counter_index, country_index].mean()
+
                     # updating the new value in the original dataframe
                     # doing -1 to put the value into the last element of rolling day window (if rolling_days = 7 then into the 7th element i.e (6th index not 7th index)
-                    new_df.iloc[ending_rolling_counter_index - 1, country_index] = rolling_days_mean
+                    new_df.iloc[ending_rolling_counter_index -
+                                1, country_index] = rolling_days_mean
 
                     # reached the end of the dataframe
                     if(ending_rolling_counter_index - 1 == row_count-1):
                         break
 
-                    # this function will work for the first number of rolling days 
+                    # this function will work for the first number of rolling days
                     # except the last day where we are actually filling the new average value
-                    if index_counter < rolling_days -1:
+                    if index_counter < rolling_days - 1:
                         # removing (here filling with Nan value) the first rolling days values from the dataframe
                         new_df.iloc[date_index, country_index] = np.nan
                         index_counter += 1
-        return new_df 
+        return new_df
 
 
 # Sp = Super_Normalization()
