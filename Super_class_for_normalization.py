@@ -191,6 +191,7 @@ class Super_Normalization():
         return np.nan
     
     def save_and_convert_to_three_states(self, dataframe, file_name):
+        dataframe.set_index('date', inplace = True)
         final_df = dataframe.applymap(lambda x : self.num_to_sign_converter(x))
         final_df.to_excel(file_name + ".xlsx")
         
