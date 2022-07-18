@@ -171,6 +171,29 @@ class Super_Normalization():
                         new_df.iloc[date_index, country_index] = np.nan
                         index_counter += 1
         return new_df
+    
+     ###########################Beta function
+    ###########################Conversion of the dataframe into three states
+    def num_to_sign_converter(self, val):
+    
+    if val <= 0.333:
+        #assign the value - (mild)
+        return "-"
+        
+    elif val > 0.33 and val <= 0.666:
+         #assign the value + (moderate)
+        return "+"
+    
+    elif val > 0.666 and val <= 1:
+         #assign the value ++ (severe)
+        return "++"
+    else:
+        return np.nan
+    
+    def save_and_convert_to_three_states(self, dataframe, file_name):
+        final_df = dataframe.applymap(lambda x : self.num_to_sign_converter(x))
+        final_df.to_excel(file_name + ".xlsx")
+        
 
 
 # Sp = Super_Normalization()
