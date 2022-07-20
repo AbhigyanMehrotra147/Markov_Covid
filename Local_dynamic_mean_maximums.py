@@ -1,19 +1,22 @@
-from numpy import column_stack
+
 from Super_class_for_normalization import Super_Normalization as SN
 import pandas as pd
 import matplotlib.pyplot as plt
 
 
 class Local_Dynamic_Mean_Maximum(SN):
-    def __init__(self, catagory):
+    def __init__(self):
         SN.__init__(self)
-        self.catagory = catagory
-        self.Dataframe_with_countries_as_column = SN.get_final_df_Dictionary(self)[
-            self.catagory]
+        self.DataFrame_dicitionary = SN.get_final_df_Dictionary(self)
+        self.Dataframe_with_countries_as_column = pd.DataFrame()
 
     # Function divides and adds each data points of frame by the local maximum
     # uses the applymap method which acts on each data point in the data set
-    def Divide_by_max_and_add(self, frame_size):
+    def Divide_by_max_and_add(self, catagory="new_cases", frame_size=120):
+        # Assiging catagory to Dataframe_wtih_countries_as_colums
+        # Making a deep copy so that changes do not reflect in the original dataframe
+        self.Dataframe_with_countries_as_column = self.DataFrame_dicitionary[catagory].copy(
+            deep=True)
         temp_data_frame = self.Dataframe_with_countries_as_column
         row_size = temp_data_frame.shape[0]
         column_size = temp_data_frame.shape[1]
@@ -45,7 +48,7 @@ class Local_Dynamic_Mean_Maximum(SN):
         # print(self.Dataframe_with_countries_as_column)
 
     # Function takes the mean of each data point acoording to the number of times values have been added to it
-    def Divide_by_frame_size(self, frame_size):
+    def Divide_by_frame_size(self, frame_size=120):
         row_size = self.Dataframe_with_countries_as_column.shape[0]
         count_foward = 1
         for i in range(0, row_size):
@@ -72,18 +75,25 @@ class Local_Dynamic_Mean_Maximum(SN):
 
     # Function plots the new cases from each country normalized to the local maximum
 
-    def plot_data_frame(self, population_group, countries=None):
-        super().plot_data_frame(self.Dataframe_with_countries_as_column,
-                                "Local Dynamic Mean", self.catagory, countries, population_group)
+    def plot_data_frame(self, path_to_save="", Countries=None, name_on_saving=""):
+        super().plot_data_frame(
+            DathFrame_to_be_plotted=self.Dataframe_with_countries_as_column, countries=Countries, path_to_save=path_to_save, name_on_saving=name_on_saving)
 
 
 frame_size = 120
-Catagory = ["new_deaths", "hosp_patients", "icu_patients"]
-for catagory in Catagory:
+Ldm = Local_Dynamic_Mean_Maximum()
+Catagory = ["icu_patients", "new_cases", "new_deaths", "hosp_patients"]
+Path_to_save = "C:/Users/Abhigyan/Desktop/Amol's Plots/"
+for cat in Catagory:
     i = 1
-    for group in SN.population_in_ascending_order:
-        Ldm = Local_Dynamic_Mean_Maximum(catagory)
-        Ldm.Divide_by_max_and_add(frame_size)
-        Ldm.Divide_by_frame_size(frame_size)
-        Ldm.plot_data_frame(population_group="group" + str(i), countries=group)
+    Ldm.Divide_by_max_and_add(catagory=cat)
+    Ldm.Divide_by_frame_size()
+    Country_Group = SN.segregate_countries(
+        DataFrame_to_be_segregated=Ldm.Dataframe_with_countries_as_column)
+    for pop_group in Country_Group:
+
+        name_on_saving = "group " + \
+            str(i) + "Local Dynamic Mean " + str(cat) + ".png"
+        Ldm.plot_data_frame(path_to_save=Path_to_save,
+                            name_on_saving=name_on_saving, Countries=pop_group)
         i += 1
