@@ -116,8 +116,8 @@ class Super_Normalization():
 
             interpolated_df = self.divide_by_population(
                 DataFrame=interpolated_df)
-            interpolated_df = self.rolling_average(
-                interpolated_df, rolling_days)
+            # interpolated_df = self.rolling_average(
+            #     interpolated_df, rolling_days)
             dictionary[parameter] = interpolated_df
 
         return dictionary
@@ -178,6 +178,7 @@ class Super_Normalization():
                 lambda x: Super_Normalization.num_to_sign_converter(x, max_of_country))
         Three_states_df.to_excel(file_name + ".xlsx")
 
+    # Function adds one to entry corresponding to specific state to state transfer
     @staticmethod
     def assign_transition(state_a, state_b, Stochastic_matrix):
         if state_a == '-' and state_b == '-':
@@ -211,17 +212,14 @@ class Super_Normalization():
         for i in range(0, Numb_rows-1):
             Super_Normalization.assign_transition(
                 state_a=dataframe.iloc[i, column_index], state_b=dataframe.iloc[i+1, column_index], Stochastic_matrix=Stochastic_Matrix_np)
-        print(Stochastic_Matrix_np)
         sum_of_rows = np.sum(Stochastic_Matrix_np, 1)
         Stochastic_Matrix_np = Stochastic_Matrix_np.astype(np.float16)
-        print(sum_of_rows)
         for m in range(3):
             for n in range(3):
                 if sum_of_rows[m] == 0:
-                    print("yes")
                     continue
-                Stochastic_Matrix_np[m][n] = Stochastic_Matrix_np[m][n] / \
-                    sum_of_rows[m]
+                Stochastic_Matrix_np[m][n] = round(Stochastic_Matrix_np[m][n] /
+                                                   sum_of_rows[m], 3)
         return Stochastic_Matrix_np
     # The Type argument is the type of Normalization
     # path_to_save give the location in which the plot is saved
